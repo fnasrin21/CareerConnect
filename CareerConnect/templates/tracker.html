@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Application Tracker - CareerConnect</title>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">CareerConnect <i class="fas fa-briefcase"></i></div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('job_board') }}">Job Board</a></li>
+            <li><a href="{{ url_for('tracker') }}">Application Tracker</a></li>
+            {% if session.get('username') %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li class="username">Hello, {{ session['username'] }}</li>
+            {% else %}
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="tracker-container">
+        <!-- Form Section -->
+        <div class="tracker-form">
+            <h2 class="center-title">Add Application</h2>
+            <form method="POST" action="{{ url_for('tracker') }}">
+                <label for="company_name">Company Name:</label>
+                <input type="text" id="company_name" name="company_name" required>
+
+                <label for="job_title">Job Title:</label>
+                <input type="text" id="job_title" name="job_title" required>
+
+                <label for="status">Application Status:</label>
+                <select id="status" name="status" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Submitted">Submitted</option>
+                    <option value="Interview Scheduled">Interview Scheduled</option>
+                    <option value="Offer Received">Offer Received</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="No Response">No Response</option>
+                </select>
+
+                <label for="notes">Notes:</label>
+                <textarea id="notes" name="notes"></textarea>
+
+                <button type="submit">Add to Tracker</button>
+            </form>
+        </div>
+
+        <!-- Records Section -->
+        <div class="tracker-records">
+            <h2 class="center-title">Tracked Applications</h2>
+            {% if applications %}
+                <ul>
+                    {% for application in applications %}
+                        <li>
+                            <strong>Company Name:</strong> {{ application['company_name'] }}<br>
+                            <strong>Job Title:</strong> {{ application['job_title'] }}<br>
+                            <strong>Status:</strong> {{ application['status'] }}<br>
+                            <strong>Notes:</strong> {{ application['notes'] }}<br>
+                        </li>
+                        <hr>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No applications to track yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ url_for('job_board') }}">Back to Job Board</a>
+</body>
+</html>

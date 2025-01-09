@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>CareerConnect - Login</title>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">CareerConnect <i class="fas fa-briefcase"></i></div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('job_board') }}">Job Board</a></li>
+            <li><a href="{{ url_for('tracker') }}">Application Tracker</a></li>
+            {% if session.get('username') %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li class="username">Hello, {{ session['username'] }}</li>
+            {% else %}
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Login Form -->
+    <h1>Welcome to CareerConnect</h1>
+    <form method="POST" action="{{ url_for('index') }}">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+    </form>
+</body>
+</html>
+
+
+

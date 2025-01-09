@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board - CareerConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">CareerConnect <i class="fas fa-briefcase"></i></div>
+        <ul>
+            <li><a href="{{ url_for('job_board') }}">Job Board</a></li>
+            <li><a href="{{ url_for('tracker') }}">Application Tracker</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            <li class="username">Hello, {{ session['username'] }}</li>
+        </ul>
+    </nav>
+
+    <!-- Job Listings -->
+    <div class="job-listings-container">
+        <h1>Job Board</h1>
+
+        {% if jobs %}
+            {% for job in jobs %}
+                <div class="job-listing">
+                    <h3>Job Title: {{ job.job_title }}</h3>
+                    <p><strong>Company:</strong> {{ job.employer_name }}</p>
+                    <p><strong>Location:</strong> {{ job.location if job.location.strip() != ", ," else "Not specified" }}</p>
+                    <p><strong>Salary:</strong> {{ job.salary or "Not specified" }}</p>
+                    <a href="{{ job.job_apply_link }}" target="_blank">Apply Now</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No job listings available at the moment. Please check back later.</p>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 CareerConnect. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
+
+
